@@ -1,0 +1,39 @@
+CREATE DATABASE `mysql-chal` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+CREATE TABLE `mysql-chal`.UserTypes (
+	id BIGINT auto_increment NOT NULL,
+	name varchar(255) NOT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT UserTypes_UNIQUE UNIQUE KEY (name)
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `mysql-chal`.Users (
+	id BIGINT auto_increment NOT NULL,
+	user_type_id BIGINT NOT NULL,
+	username varchar(255) NOT NULL,
+	last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+	PRIMARY KEY (id),
+	CONSTRAINT Users_UNIQUE UNIQUE KEY (username),
+	CONSTRAINT Users_UserTypes_FK FOREIGN KEY (id) REFERENCES `mysql-chal`.UserTypes(id) ON DELETE CASCADE
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `mysql-chal`.Scores (
+	user_id BIGINT NOT NULL,
+	game_name varchar(255) NOT NULL,
+	score BIGINT NOT NULL,
+	last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
+	id BIGINT NULL,
+	PRIMARY KEY (user_id,game_name),
+	CONSTRAINT Scores_Users_FK FOREIGN KEY (id) REFERENCES `mysql-chal`.Users(id) ON DELETE CASCADE
+)
+ENGINE=InnoDB
+DEFAULT CHARSET=utf8mb4
+COLLATE=utf8mb4_0900_ai_ci;
